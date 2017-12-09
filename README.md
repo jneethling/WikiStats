@@ -15,3 +15,7 @@ each run unless the database is deleted between runs.
     The API exposes 2 endpoints:
     /totals - Total number of characters edited by country
     /counts - Count of edit sessions by country
+
+Dependencies
+------------
+Python 2.7, Websocket-client & Tornado 
