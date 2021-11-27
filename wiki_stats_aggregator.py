@@ -63,13 +63,13 @@ def make_app():
 
 if __name__ == "__main__":
 
-    print "Initializing the service..."
+    print("Initializing the service...")
     ws = create_connection("ws://wikimon.hatnote.com:9000")
     counter = 0
 
     while counter < 10:
 
-        print "Receiving sample data (looking for 10 usable records)..."
+        print("Receiving sample data (looking for 10 usable records)...")
         result = ws.recv()
 
         if "geo_ip" in result:
@@ -81,7 +81,7 @@ if __name__ == "__main__":
                 change = 0
 
             if country is not None:
-                print "Writing to database (record {} of 10)...".format(str(counter + 1))
+                print("Writing to database (record {} of 10)...".format(str(counter + 1)))
                 cursor.execute('''INSERT INTO stats(country_name, change_size) VALUES(?,?)''', (country, change))
                 db.commit()
                 counter += 1
@@ -89,5 +89,5 @@ if __name__ == "__main__":
     ws.close()
     app = make_app()
     app.listen(8888)
-    print "Service is ready!"
+    print("Service is ready!")
     tornado.ioloop.IOLoop.current().start()

@@ -18,4 +18,4 @@ each run unless the database is deleted between runs.
 
 Dependencies
 ------------
-Python 2.7, Websocket-client & Tornado 
+Python 3, Websocket-client & Tornado 
