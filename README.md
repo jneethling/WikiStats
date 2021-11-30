@@ -6,7 +6,7 @@ The data is added to a database if it contains some 'geo_ip' data for the purpos
 simple statistical aggregations for comparing relative activity levels between different countries.
 
     The API exposes the following endpoints:
-    /start - Starts the aggrgation in a worker thread
+    /start - Starts the aggregation in a worker thread
     /stop - Stop the aggregation thread
     /status - Verify if the worker thread is active and the number of records ingested in the session
     /totals - Total number of characters edited by country
@@ -14,4 +14,8 @@ simple statistical aggregations for comparing relative activity levels between d
 
 Dependencies
 ------------
-Python 3, Websocket-client & Tornado 
+Python 3, Websocket-client & Tornado
+
+Test with pytest
+----------------
+python -m pytest ./tests --cov --cov-report term-missing
