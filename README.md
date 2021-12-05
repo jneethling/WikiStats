@@ -1,4 +1,5 @@
 # WikiStatsAggregator
+## Summary
 A very simple Wikipedia stats aggregator for illustrative purposes
 
 This application makes a web socket connection to a service supplying Wikipedia updates.
@@ -12,10 +13,16 @@ simple statistical aggregations for comparing relative activity levels between d
     /totals - Total number of characters edited by country
     /counts - Count of edit sessions by country
 
-Dependencies
-------------
+## TODO
+* Improve async test cases
+* Create Dockerfile
+* Migrate to PostgreSQL and/or redis
+* Implement additional domain profiling
+* Implement additional domain analytical endpoints
+* Try neo4j
+
+## Dependencies
 Python 3, Websocket-client & Tornado
 
-Test with pytest
-----------------
+## Test with pytest
 python -m pytest ./tests --cov --cov-report term-missing

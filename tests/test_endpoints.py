@@ -2,6 +2,7 @@ from tornado.testing import AsyncHTTPTestCase
 import json
 from src.handlers import CustomHandler
 from src import router
+import pytest
 
 class TestHandlers(AsyncHTTPTestCase):
     def get_app(self):
@@ -18,8 +19,9 @@ class TestHandlers(AsyncHTTPTestCase):
         self.assertEqual(response.code, 200)
         self.assertIn("Memory use", json.loads(response.body))
 
-    def test_getStatus(self):
-        response = self.fetch("/status")
+    @pytest.mark.asyncio
+    async def test_getStatus(self):
+        response = await self.fetch("/status")
         self.assertEqual(response.code, 200)
         resp = json.loads(response.body)
         self.assertIn("Status", resp)
@@ -27,16 +29,18 @@ class TestHandlers(AsyncHTTPTestCase):
         self.assertIn("Working in background", resp)
         self.assertIn("Records in session", resp)
 
-    def test_getTotals(self):
-        response = self.fetch("/totals")
+    @pytest.mark.asyncio
+    async def test_getTotals(self):
+        response = await self.fetch("/totals")
         self.assertEqual(response.code, 200)
         try:
             json.loads(response.body)
         except ValueError:
             self.fail("Response is not valid json!")
 
-    def test_getCount(self):
-        response = self.fetch("/counts")
+    @pytest.mark.asyncio
+    async def test_getCount(self):
+        response = await self.fetch("/counts")
         self.assertEqual(response.code, 200)
         try:
             json.loads(response.body)
