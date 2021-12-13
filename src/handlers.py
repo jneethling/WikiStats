@@ -7,7 +7,7 @@ class CustomHandler:
 
     def __init__(self):
 
-        self.db = sqlite3.connect('../wiki_statsDB', check_same_thread=False)
+        self.db = sqlite3.connect('./data/wiki_statsDB', check_same_thread=False)
         self.cursor = self.db.cursor()
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS stats(\
             id INTEGER PRIMARY KEY,\

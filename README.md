@@ -15,11 +15,9 @@ simple statistical aggregations for comparing relative activity levels between d
 
 ## TODO
 * Improve async test cases
-* Create Dockerfile
-* Migrate SQLite to PostgreSQL and/or redis
 * Implement additional domain profiling
 * Implement additional domain analytical endpoints
-* Try neo4j
+* Try redis and/or neo4j
 * Maybe migrate this to Flask 2
 * ..or even better, Gorilla Mux (Golang)
 

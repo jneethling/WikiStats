@@ -4,9 +4,6 @@ import tornado.web
 import tornado.ioloop
 import concurrent.futures
 
-# Custom class
-from .handlers import CustomHandler
-
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=4,)
 
 class pingHandler(tornado.web.RequestHandler):
@@ -85,8 +82,8 @@ def make_app(c_handler):
 
 if __name__ == '__main__':
 
+    from handlers import CustomHandler
     c_handler = CustomHandler()
     application = make_app(c_handler)
-    application.listen(8881)
-    print('Server started on port 8881')
+    application.listen(5000)
     tornado.ioloop.IOLoop.instance().start()
