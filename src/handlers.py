@@ -43,12 +43,12 @@ class CustomHandler:
         self.status = status
         self.message = msg
 
-    def getStatus(self):
+    def getStatus(self) -> json:
         
         msg = {"Status": self.status, "Message": self.message, "Working in background": self.working, "Records in session": self.counter}
         return msg
 
-    def getTotals(self):
+    def getTotals(self) -> json:
 
         data = {}
         self.cursor.execute('''SELECT country_name, SUM(change_size) FROM stats GROUP BY country_name''')
@@ -57,7 +57,7 @@ class CustomHandler:
         msg = json.dumps(data)
         return msg
 
-    def getCounts(self):
+    def getCounts(self) -> json:
 
         data = {}
         self.cursor.execute('''SELECT country_name, COUNT(country_name) FROM stats GROUP BY country_name''')
@@ -66,7 +66,7 @@ class CustomHandler:
         msg = json.dumps(data)
         return msg
 
-    def stopWork(self):
+    def stopWork(self) -> json:
 
         self.ws.close
         self.working = False
@@ -76,7 +76,7 @@ class CustomHandler:
         msg = 'Function handler background work stopped'
         return {'message': msg}
 
-    def startWork(self):
+    def startWork(self) -> json:
 
         if self.working:
             msg = 'Function handler already working in background, ignoring request'

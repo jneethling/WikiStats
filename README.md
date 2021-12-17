@@ -13,16 +13,13 @@ simple statistical aggregations for comparing relative activity levels between d
     /totals - Total number of characters edited by country
     /counts - Count of edit sessions by country
 
+## Test with pytest (and pytest-cov plugin)
+python -m pytest ./tests --cov --cov-report term-missing
+
 ## TODO
-* Improve async test cases
+* Improve test suit including proper fixtures for the state
 * Implement additional domain profiling
 * Implement additional domain analytical endpoints
 * Try redis and/or neo4j
 * Maybe migrate this to Flask 2
 * ..or even better, Gorilla Mux (Golang)
-
-## Dependencies
-Python 3, Websocket-client & Tornado
-
-## Test with pytest
-python -m pytest ./tests --cov --cov-report term-missing

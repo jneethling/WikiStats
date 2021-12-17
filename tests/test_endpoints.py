@@ -2,11 +2,17 @@ from tornado.testing import AsyncHTTPTestCase
 import json
 from src.handlers import CustomHandler
 from src import router
-import pytest
+#import pytest
+
+c_handler = CustomHandler()
+c_handler.cursor.execute('''DELETE FROM stats''')
+c_handler.db.commit()
+c_handler.cursor.execute('''INSERT INTO stats(country_name, change_size) VALUES(?,?)''', ("United States", 3))
+c_handler.db.commit()
 
 class TestHandlers(AsyncHTTPTestCase):
     def get_app(self):
-        c_handler = CustomHandler()
+        #c_handler = CustomHandler()
         return router.make_app(c_handler)
 
     def test_getPing(self):
@@ -19,30 +25,26 @@ class TestHandlers(AsyncHTTPTestCase):
         self.assertEqual(response.code, 200)
         self.assertIn("Memory use", json.loads(response.body))
 
-    @pytest.mark.asyncio
-    async def test_getStatus(self):
-        response = await self.fetch("/status")
+    def test_getStatus(self):
+        response = self.fetch("/status")
         self.assertEqual(response.code, 200)
         resp = json.loads(response.body)
         self.assertIn("Status", resp)
+        self.assertTrue(resp["Status"])
         self.assertIn("Message", resp)
         self.assertIn("Working in background", resp)
         self.assertIn("Records in session", resp)
 
-    @pytest.mark.asyncio
-    async def test_getTotals(self):
-        response = await self.fetch("/totals")
+    def test_getTotals(self):
+        response = self.fetch("/totals")
         self.assertEqual(response.code, 200)
-        try:
-            json.loads(response.body)
-        except ValueError:
-            self.fail("Response is not valid json!")
+        resp =json.loads(response.body)
+        self.assertIn("United States", resp)
+        self.assertEqual(resp["United States"], 3)
 
-    @pytest.mark.asyncio
-    async def test_getCount(self):
-        response = await self.fetch("/counts")
+    def test_getCount(self):
+        response = self.fetch("/counts")
         self.assertEqual(response.code, 200)
-        try:
-            json.loads(response.body)
-        except ValueError:
-            self.fail("Response is not valid json!")
+        resp = json.loads(response.body)
+        self.assertIn("United States", resp)
+        self.assertEqual(resp["United States"], 1)
