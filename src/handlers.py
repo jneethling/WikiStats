@@ -90,5 +90,6 @@ class CustomHandler:
             self.t = threading.Thread(target=self.worker, args=(self.kill_switch,))
             self.t.start()
 
-        msg = {"Number of records ingested in this session": self.counter}
-        return msg
+        msg = 'Function handler background work started'
+        return {'message': msg}
+        
