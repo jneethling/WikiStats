@@ -1,3 +1,5 @@
+[![Python application](https://github.com/jneethling/WikiStats/actions/workflows/python-app.yml/badge.svg)](https://github.com/jneethling/WikiStats/actions/workflows/python-app.yml)
+
 # WikiStatsAggregator
 ## Summary
 A very simple Wikipedia stats aggregator for illustrative purposes written in Python with Tornado
