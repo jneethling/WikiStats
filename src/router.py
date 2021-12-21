@@ -15,14 +15,12 @@ class pingHandler(tornado.web.RequestHandler):
 
 class memoryHandler(tornado.web.RequestHandler):
 
-    def get(self):
-        memory = 1024 * 1024
-        proc = psutil.Process(os.getpid())
-        mem0 = proc.memory_info().rss
-        msg = str(mem0/memory) + 'Mb'
-        response = {'Memory use':msg}
-        self.write(response)
-        self.finish()
+    def initialize(self, ref_obj):
+        self.ref_obj = ref_obj
+
+    async def get(self):
+        res = await tornado.ioloop.IOLoop.current().run_in_executor(executor, self.ref_obj.getMemory)
+        self.write(res)
 
 class statusHandler(tornado.web.RequestHandler):
 
@@ -72,7 +70,7 @@ class stopHandler(tornado.web.RequestHandler):
 def make_app(c_handler):
     return tornado.web.Application([
                     (r"/ping", pingHandler),
-                    (r"/memory", memoryHandler),
+                    (r"/memory", memoryHandler, {"ref_obj": c_handler}),
                     (r"/status", statusHandler, {"ref_obj":c_handler}),
                     (r"/start", startHandler, {"ref_obj":c_handler}),
                     (r"/stop", stopHandler, {"ref_obj":c_handler}),

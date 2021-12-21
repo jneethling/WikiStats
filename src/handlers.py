@@ -1,6 +1,9 @@
+import os
+import psutil
 import json
 import sqlite3
 import threading
+from datetime import datetime, timezone
 from websocket import create_connection
 
 class CustomHandler:
@@ -45,9 +48,18 @@ class CustomHandler:
 
     def getStatus(self) -> json:
         
-        msg = {"Status": self.status, "Message": self.message, "Working in background": self.working, "Records in session": self.counter}
+        stat_result = os.stat('./data/wiki_statsDB')
+        modified = datetime.fromtimestamp(stat_result.st_mtime, tz=timezone.utc).strftime("%m/%d/%Y, %H:%M:%S")
+        msg = {"Status": self.status, "Message": self.message, "Working in background": self.working, "Records in session": self.counter, "DB size (bytes)": stat_result.st_size, "Modified": modified}
         return msg
 
+    def getMemory(self) -> json:
+        memory = 1024 * 1024
+        proc = psutil.Process(os.getpid())
+        mem0 = proc.memory_info().rss
+        msg = str(mem0/memory) + 'Mb'
+        return {'Memory use': msg}
+    
     def getTotals(self) -> json:
 
         data = {}

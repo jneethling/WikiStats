@@ -34,6 +34,8 @@ class TestHandlers(AsyncHTTPTestCase):
         self.assertIn("Message", resp)
         self.assertIn("Working in background", resp)
         self.assertIn("Records in session", resp)
+        self.assertIn("DB size (bytes)", resp)
+        self.assertIn("Modified", resp)
 
     def test_getTotals(self):
         response = self.fetch("/totals")
