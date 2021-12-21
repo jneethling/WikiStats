@@ -18,7 +18,6 @@ python -m pytest ./tests --cov --cov-report term-missing
 
 ## TODO
 * Improve test suit including proper fixtures for the state
-* Add timestamp to state & include latest timestamp in status message
 * Implement additional domain profiling
 * Implement additional domain analytical endpoints
 * Try redis and/or neo4j
