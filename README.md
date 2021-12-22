@@ -18,10 +18,8 @@ simple statistical aggregations for comparing relative activity levels between d
 ## Test with pytest (and pytest-cov plugin)
 python -m pytest ./tests --cov --cov-report term-missing
 
-## TODO
-* Improve test suit including proper fixtures for the state
-* Implement additional domain profiling
-* Implement additional domain analytical endpoints
-* Try redis and/or neo4j
-* Maybe migrate this to Flask 2
-* ..or even better, Gorilla Mux (Golang)
+## Build image
+docker build -t wiki:latest .
+
+## Run container with data persistance
+docker container run -p 5000:5000 -v wikivol:/app/data wiki:latest

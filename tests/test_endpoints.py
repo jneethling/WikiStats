@@ -2,17 +2,21 @@ from tornado.testing import AsyncHTTPTestCase
 import json
 from src.handlers import CustomHandler
 from src import router
-#import pytest
 
 c_handler = CustomHandler()
 c_handler.cursor.execute('''DELETE FROM stats''')
 c_handler.db.commit()
-c_handler.cursor.execute('''INSERT INTO stats(country_name, change_size) VALUES(?,?)''', ("United States", 3))
+test_data = [
+        ('United States', 3),
+        ('United States', 4),
+        ('United Kingdom', 3),
+    ]
+    
+c_handler.cursor.executemany('''INSERT INTO stats(country_name, change_size) VALUES(?,?)''', test_data)
 c_handler.db.commit()
 
 class TestHandlers(AsyncHTTPTestCase):
     def get_app(self):
-        #c_handler = CustomHandler()
         return router.make_app(c_handler)
 
     def test_getPing(self):
@@ -42,11 +46,15 @@ class TestHandlers(AsyncHTTPTestCase):
         self.assertEqual(response.code, 200)
         resp =json.loads(response.body)
         self.assertIn("United States", resp)
-        self.assertEqual(resp["United States"], 3)
+        self.assertEqual(resp["United States"], 7)
+        self.assertIn("United Kingdom", resp)
+        self.assertEqual(resp["United Kingdom"], 3)
 
     def test_getCount(self):
         response = self.fetch("/counts")
         self.assertEqual(response.code, 200)
         resp = json.loads(response.body)
         self.assertIn("United States", resp)
-        self.assertEqual(resp["United States"], 1)
+        self.assertEqual(resp["United States"], 2)
+        self.assertIn("United Kingdom", resp)
+        self.assertEqual(resp["United Kingdom"], 1)
