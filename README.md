@@ -4,7 +4,7 @@
 ## Summary
 A very simple Wikipedia stats aggregator for illustrative purposes written in Python with Tornado
 
-This application makes a web socket connection to a service supplying Wikipedia updates.
+This application makes a web socket connection to the the Hatnote Wikipedia monitor (https://github.com/hatnote/wikimon).
 The data is added to a database if it contains some 'geo_ip' data for the purpose of serving 
 simple statistical aggregations for comparing relative activity levels between different countries.
 
