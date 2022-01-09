@@ -16,7 +16,6 @@ simple statistical aggregations for comparing relative activity levels between d
     /counts - Count of edit sessions by country
 
 ## TODO
-* Craceful shutdown
 * Streamline tests by providing a conftest.py file with Pytest fixtures
 
 ## Test with pytest (and pytest-cov plugin)
