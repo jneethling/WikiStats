@@ -17,6 +17,7 @@ simple statistical aggregations for comparing relative activity levels between d
 
 ## TODO
 * Craceful shutdown
+* Streamline tests by providing a conftest.py file with Pytest fixtures
 
 ## Test with pytest (and pytest-cov plugin)
 python -m pytest ./tests --cov --cov-report term-missing

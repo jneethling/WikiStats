@@ -4,16 +4,11 @@ from src.handlers import CustomHandler
 from src import router
 
 c_handler = CustomHandler()
-c_handler.cursor.execute('''DELETE FROM stats''')
-c_handler.db.commit()
 test_data = [
         ('United States', 3),
         ('United States', 4),
         ('United Kingdom', 3),
-    ]
-    
-c_handler.cursor.executemany('''INSERT INTO stats(country_name, change_size) VALUES(?,?)''', test_data)
-c_handler.db.commit()
+        ]
 
 class TestHandlers(AsyncHTTPTestCase):
     def get_app(self):
@@ -42,6 +37,10 @@ class TestHandlers(AsyncHTTPTestCase):
         self.assertIn("Modified", resp)
 
     def test_getTotals(self):
+        c_handler.cursor.execute('''DELETE FROM stats''')
+        c_handler.db.commit()    
+        c_handler.cursor.executemany('''INSERT INTO stats(country_name, change_size) VALUES(?,?)''', test_data)
+        c_handler.db.commit()
         response = self.fetch("/totals")
         self.assertEqual(response.code, 200)
         resp =json.loads(response.body)
@@ -51,6 +50,10 @@ class TestHandlers(AsyncHTTPTestCase):
         self.assertEqual(resp["United Kingdom"], 3)
 
     def test_getCount(self):
+        c_handler.cursor.execute('''DELETE FROM stats''')
+        c_handler.db.commit()    
+        c_handler.cursor.executemany('''INSERT INTO stats(country_name, change_size) VALUES(?,?)''', test_data)
+        c_handler.db.commit()
         response = self.fetch("/counts")
         self.assertEqual(response.code, 200)
         resp = json.loads(response.body)
