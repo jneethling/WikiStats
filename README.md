@@ -15,6 +15,9 @@ simple statistical aggregations for comparing relative activity levels between d
     /totals - Total number of characters edited by country
     /counts - Count of edit sessions by country
 
+## TODO
+* Craceful shutdown
+
 ## Test with pytest (and pytest-cov plugin)
 python -m pytest ./tests --cov --cov-report term-missing
 
