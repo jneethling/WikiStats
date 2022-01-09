@@ -1,3 +1,5 @@
+import logging
+import signal
 import tornado.web
 import tornado.ioloop
 import concurrent.futures
@@ -65,8 +67,21 @@ class stopHandler(tornado.web.RequestHandler):
         res = await tornado.ioloop.IOLoop.current().run_in_executor(executor, self.ref_obj.stopWork)
         self.write(res)
 
+class WikiStatsServer(tornado.web.Application):
+    is_closing = False
+
+    def signal_handler(self, signum, frame):
+        logging.info('Server stopping...')
+        self.is_closing = True
+
+    def try_exit(self):
+        if self.is_closing:
+            # clean up here
+            tornado.ioloop.IOLoop.instance().stop()
+            logging.info('Server stopped')
+
 def make_app(c_handler):
-    return tornado.web.Application([
+    return WikiStatsServer([
                     (r"/ping", pingHandler),
                     (r"/memory", memoryHandler, {"ref_obj": c_handler}),
                     (r"/status", statusHandler, {"ref_obj":c_handler}),
@@ -81,5 +96,8 @@ if __name__ == '__main__':
     from handlers import CustomHandler
     c_handler = CustomHandler()
     application = make_app(c_handler)
+    signal.signal(signal.SIGINT, application.signal_handler)
     application.listen(5000)
+    logging.info('Server starting')
+    tornado.ioloop.PeriodicCallback(application.try_exit, 100).start()
     tornado.ioloop.IOLoop.instance().start()
