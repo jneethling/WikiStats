@@ -15,6 +15,8 @@ simple statistical aggregations for comparing relative activity levels between d
     /totals - Total number of characters edited by country
     /counts - Count of edit sessions by country
 
+For simplicity the app uses a SQLite database. All write operations happens on a worker thread, while read operations happens on the main thread. This is possible due to the default serialized mode (https://www.sqlite.org/threadsafe.html)
+
 ## TODO
 * Streamline tests by providing a conftest.py file with Pytest fixtures
 
