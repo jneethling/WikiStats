@@ -71,14 +71,13 @@ class WikiStatsServer(tornado.web.Application):
     is_closing = False
 
     def signal_handler(self, signum, frame):
-        logging.info('Server stopping...')
+        logging.info('Server shutting down...')
         self.is_closing = True
 
     def try_exit(self):
         if self.is_closing:
-            # clean up here
             tornado.ioloop.IOLoop.instance().stop()
-            logging.info('Server stopped')
+            logging.info('Server shut down complete')
 
 def make_app(c_handler):
     return WikiStatsServer([
@@ -93,11 +92,12 @@ def make_app(c_handler):
 
 if __name__ == '__main__':
 
+    logging.basicConfig(format='%(asctime)s:%(levelname)s:%(message)s', level=logging.INFO)
+    logging.info('Server starting...')
     from handlers import CustomHandler
     c_handler = CustomHandler()
     application = make_app(c_handler)
     signal.signal(signal.SIGINT, application.signal_handler)
     application.listen(5000)
-    logging.info('Server starting')
     tornado.ioloop.PeriodicCallback(application.try_exit, 100).start()
     tornado.ioloop.IOLoop.instance().start()
