@@ -10,18 +10,26 @@ class CustomHandler:
 
     def __init__(self):
 
-        self.db = sqlite3.connect('./data/wiki_statsDB', check_same_thread=False)
-        self.cursor = self.db.cursor()
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS stats(\
+        self.working = False
+        self.counter = 0
+        self.ws = None
+        if self.dbReady('./data/wiki_statsDB'):
+            self.setStatus(True, 'Function handler on standby')
+        else:
+            self.setStatus(False, 'Database error, cannot start service')
+            
+    def dbReady(self, path) -> bool:
+        try:
+            self.db = sqlite3.connect(path, check_same_thread=False)
+            self.cursor = self.db.cursor()
+            self.cursor.execute('''CREATE TABLE IF NOT EXISTS stats(\
             id INTEGER PRIMARY KEY,\
             country_name TEXT,\
             change_size INTEGER)''')
-        self.db.commit()
-
-        self.ws = None
-        self.setStatus(True, 'Function handler on standby')
-        self.working = False
-        self.counter = 0
+            self.db.commit()
+            return True
+        except sqlite3.OperationalError:
+            return False
 
     def worker(self, stop_event):
  

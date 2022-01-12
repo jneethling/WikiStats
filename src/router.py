@@ -1,5 +1,6 @@
 import logging
 import signal
+import sys
 import tornado.web
 import tornado.ioloop
 import concurrent.futures
@@ -96,8 +97,12 @@ if __name__ == '__main__':
     logging.info('Server starting...')
     from handlers import CustomHandler
     c_handler = CustomHandler()
-    application = make_app(c_handler)
-    signal.signal(signal.SIGINT, application.signal_handler)
-    application.listen(5000)
-    tornado.ioloop.PeriodicCallback(application.try_exit, 100).start()
-    tornado.ioloop.IOLoop.instance().start()
+    if c_handler.status:
+        application = make_app(c_handler)
+        signal.signal(signal.SIGINT, application.signal_handler)
+        application.listen(5000)
+        tornado.ioloop.PeriodicCallback(application.try_exit, 100).start()
+        tornado.ioloop.IOLoop.instance().start()
+    else:
+        logging.error(c_handler.message)
+        sys.exit(1)
