@@ -6,7 +6,7 @@ from src import router
 
 class TestControls(AsyncHTTPTestCase):
     def get_app(self):
-        c_handler = CustomHandler()
+        c_handler = CustomHandler("./data/wiki_statsDB")
         return router.make_app(c_handler)
 
     def test_startstop(self):

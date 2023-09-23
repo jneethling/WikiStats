@@ -3,7 +3,7 @@ import json
 from src.handlers import CustomHandler
 from src import router
 
-c_handler = CustomHandler()
+c_handler = CustomHandler("./data/wiki_statsDB")
 test_data = [
         ('United States', 3),
         ('United States', 4),

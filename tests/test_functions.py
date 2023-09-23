@@ -1,7 +1,7 @@
 import unittest
 from src.handlers import CustomHandler
 
-testInstance = CustomHandler()
+testInstance = CustomHandler("./data/wiki_statsDB")
 
 class FunctionTests(unittest.TestCase):
 

@@ -8,12 +8,13 @@ from websocket import create_connection
 
 class CustomHandler:
 
-    def __init__(self):
+    def __init__(self, dbPath):
 
         self.working = False
         self.counter = 0
         self.ws = None
-        if self.dbReady('./data/wiki_statsDB'):
+        self.dbPath = dbPath
+        if self.dbReady(self.dbPath):
             self.setStatus(True, 'Function handler on standby')
         else:
             self.setStatus(False, 'Database error, cannot start service')
@@ -56,7 +57,7 @@ class CustomHandler:
 
     def getStatus(self) -> json:
         
-        stat_result = os.stat('./data/wiki_statsDB')
+        stat_result = os.stat(self.dbPath)
         modified = datetime.fromtimestamp(stat_result.st_mtime, tz=timezone.utc).strftime("%m/%d/%Y, %H:%M:%S")
         msg = {"Status": self.status, "Message": self.message, "Working in background": self.working, "Records in session": self.counter, "DB size (bytes)": stat_result.st_size, "Modified": modified}
         return msg

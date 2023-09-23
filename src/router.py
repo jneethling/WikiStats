@@ -96,7 +96,7 @@ if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s:%(levelname)s:%(message)s', level=logging.INFO)
     logging.info('Server starting...')
     from handlers import CustomHandler
-    c_handler = CustomHandler()
+    c_handler = CustomHandler("./data/wiki_statsDB")
     if c_handler.status:
         application = make_app(c_handler)
         signal.signal(signal.SIGINT, application.signal_handler)
